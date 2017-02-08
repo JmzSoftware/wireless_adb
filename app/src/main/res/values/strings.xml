@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Jmz Wireless ADB</string>
+    <string name="enable_adb">Enable ADB</string>
+    <string name="disable_adb">Disable ADB</string>
 </resources>

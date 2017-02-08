@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
         adb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adb.getText() == "Disable ADB") {
+                if (adb.getText() == getString(R.string.disable_adb)) {
                     disableAdb();
                     textView.setText("");
-                    adb.setText("Enable ADB");
+                    adb.setText(R.string.enable_adb);
                 } else {
                     enableAdb();
                     textView.setText(String.format("Run 'adb connect %s:5555' in terminal", getIP()));
-                    adb.setText("Disable ADB");
+                    adb.setText(R.string.disable_adb);
                 }
             }
         });
@@ -64,13 +64,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enableAdb () {
-        String[] commands = { "setprop service.adb.tcp.port 5555", "stop adbd", "start adbd" };
-        Shell.SU.run(commands);
+        final String[] commands = { "setprop service.adb.tcp.port 5555", "stop adbd", "start adbd" };
+        Thread runSu = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Shell.SU.run(commands);
+            }
+        });
+        runSu.start();
     }
 
     public void disableAdb () {
-        String[] commands = { "stop adbd" };
-        Shell.SU.run(commands);
+        final String[] commands = { "stop adbd" };
+        Thread runSu = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Shell.SU.run(commands);
+            }
+        });
+        runSu.start();
     }
 
     public String getIP () {
